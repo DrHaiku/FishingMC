@@ -1,0 +1,9 @@
+name: FishingMC
+version: '${project.version}'
+main: fr.drhaiku.fish.Main
+api-version: 1.18
+authors: [ DrHaiku ]
+description: Plugin officiel pour pecher sur L'étang des Sols Pleureurs
+commands:
+  vivier:
+    description: ton vivier avec tes poissons
