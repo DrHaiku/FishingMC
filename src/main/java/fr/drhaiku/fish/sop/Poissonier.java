@@ -22,6 +22,8 @@ import org.bukkit.inventory.ItemStack;
 
 import fr.drhaiku.fish.bank.Economy;
 
+import java.util.Objects;
+
 public class Poissonier implements Listener {
 
     //Economy eco = Main.getInstance().eco;
@@ -30,110 +32,38 @@ public class Poissonier implements Listener {
     FishSell fishSell = new FishSell();
 
     @EventHandler
-    public void onInventoryLeft(InventoryCloseEvent e){
+    public void onInteract(PlayerInteractAtEntityEvent e){
 
-        Player player = (Player) e.getPlayer();
-
-        ItemStack item = (ItemStack) player.getOpenInventory().getItem(2).getItemMeta();
-
-
-        if(player.getOpenInventory().getTitle().equalsIgnoreCase("Chez Edward")){
-            if(!player.getOpenInventory().getItem(2).getType().equals(Material.AIR)){
-                player.getInventory().addItem(item);
-            }
+        Player player = e.getPlayer();
+        Entity entity = e.getRightClicked();
 
 
-        }
+        if(entity instanceof ArmorStand){
 
-    }
+            if(entity.getName().equalsIgnoreCase("poissonier")){
 
+                if(player.getInventory().getItemInMainHand().getType().equals(Material.COD)){
 
-    @EventHandler
-    public void onClick(InventoryClickEvent e){
+                    return;
 
+                }else{
 
-        Player player = (Player) e.getWhoClicked();
-        ItemStack current = e.getCurrentItem();
+                    if(player.getInventory().getItemInMainHand().getItemMeta().getDisplayName().equalsIgnoreCase("truite")){
 
-        if (current == null) return;
-
-        if(player.getOpenInventory().getTitle().equalsIgnoreCase("Chez Edward")){
-            if(current.getType().equals(Material.WHITE_STAINED_GLASS_PANE)){
-
-                e.setCancelled(true);
-
-            }
-
-            if(current.getType().equals(Material.GREEN_TERRACOTTA)){
-
-                if(player.getOpenInventory().getItem(2).getType().equals(Material.COD)){
+                        float size = Float.parseFloat(player.getInventory().getItemInMainHand().getItemMeta().getLore().get(1));
 
 
-                    if(player.getOpenInventory().getItem(2).getItemMeta().getDisplayName().equalsIgnoreCase("Truite")){
-
-                        float size = player.getOpenInventory().getItem(2).getItemMeta().getLore();
-
-
-                        if(size <= 0.4){
-
-                            player.sendMessage("test ton poisson -0.3");
-
-                        }
-
-                        if(size > 0.4 && size < 0.5){
-
-                            player.sendMessage("test ton poisson + 0.4 et -0.5");
-
-                        }
-
-                        if(size >= 0.5){
-
-                            player.sendMessage("test ton poisson + 0.5");
-
-                        }
-
-                        player.getOpenInventory().setItem(2, new ItemStack(Material.AIR));
 
                     }
 
-                    e.setCancelled(true);
-
-
-                } else{
-                    e.setCancelled(true);
                 }
 
             }
 
-
         }
 
     }
 
 
-    @EventHandler
-    public void onInteract(PlayerInteractAtEntityEvent e) {
-        Player player = e.getPlayer();
-        Entity entity = e.getRightClicked();
-
-        if (entity instanceof ArmorStand) {
-            if (entity.getName().equalsIgnoreCase("poissonier")) {
-
-                Inventory poissonier = Bukkit.createInventory(null, 9, "Chez Edward");
-
-                player.openInventory(poissonier);
-
-                poissonier.setItem(0, new ItemBuilder(Material.WHITE_STAINED_GLASS_PANE).setName(" ").toItemStack());
-                poissonier.setItem(1, new ItemBuilder(Material.WHITE_STAINED_GLASS_PANE).setName(" ").toItemStack());
-                poissonier.setItem(3, new ItemBuilder(Material.WHITE_STAINED_GLASS_PANE).setName(" ").toItemStack());
-                poissonier.setItem(4, new ItemBuilder(Material.WHITE_STAINED_GLASS_PANE).setName(" ").toItemStack());
-                poissonier.setItem(5, new ItemBuilder(Material.WHITE_STAINED_GLASS_PANE).setName(" ").toItemStack());
-                poissonier.setItem(7, new ItemBuilder(Material.WHITE_STAINED_GLASS_PANE).setName(" ").toItemStack());
-                poissonier.setItem(8, new ItemBuilder(Material.WHITE_STAINED_GLASS_PANE).setName(" ").toItemStack());
-
-                poissonier.setItem(6, new ItemBuilder(Material.GREEN_TERRACOTTA).setName("Ok").toItemStack());
-            }
-        }
-    }
 
 }
