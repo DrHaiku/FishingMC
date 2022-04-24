@@ -7,3 +7,9 @@ description: Plugin officiel pour pecher sur L'étang des Sols Pleureurs
 commands:
   vivier:
     description: ton vivier avec tes poissons
+  banque:
+    description: votre comtpe
+  custom:
+    description: yews
+  truitegive:
+    description: zrzer

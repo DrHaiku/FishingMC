@@ -1,7 +1,6 @@
 package fr.drhaiku.fish.event;
 
 
-
 import fr.drhaiku.fish.ItemBuilder;
 import fr.drhaiku.fish.Main;
 import org.bukkit.Bukkit;
@@ -16,7 +15,6 @@ import org.bukkit.event.player.PlayerFishEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 
-import javax.swing.*;
 import java.math.RoundingMode;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -28,31 +26,32 @@ public class FishingEvent implements Listener {
 
     private final HashMap<UUID, Long> cooldown;
 
-    public FishingEvent(){this.cooldown = new HashMap<>();}
+    public FishingEvent() {
+        this.cooldown = new HashMap<>();
+    }
 
 
     @EventHandler
-    public void onInteract(PlayerInteractEvent event){
+    public void onInteract(PlayerInteractEvent event) {
 
         Player player = event.getPlayer();
         Action action = event.getAction();
-        if(!cooldown.containsKey(player.getUniqueId())) return;
-        long timeElapsed = System.currentTimeMillis() -cooldown.get(player.getUniqueId());
+        if (!cooldown.containsKey(player.getUniqueId())) return;
+        long timeElapsed = System.currentTimeMillis() - cooldown.get(player.getUniqueId());
 
-        if(timeElapsed <= 2000) {
+        if (timeElapsed <= 2000) {
 
-            if(action == Action.RIGHT_CLICK_BLOCK){
+            if (action == Action.RIGHT_CLICK_BLOCK) {
                 event.setCancelled(true);
             }
 
-            if(action == Action.RIGHT_CLICK_AIR){
+            if (action == Action.RIGHT_CLICK_AIR) {
                 event.setCancelled(true);
             }
 
         }
 
     }
-
 
 
     //PLUS PETITE DES CANNE A PECHE !
@@ -65,13 +64,11 @@ public class FishingEvent implements Listener {
         Player player = event.getPlayer();
 
 
+        if (player.getInventory().getItemInMainHand().getItemMeta().getDisplayName().equalsIgnoreCase(ChatColor.BLUE + "Canne à Pêche [Débutant]")) {
 
+            if (event.getCaught() instanceof Item) {
 
-        if(player.getInventory().getItemInMainHand().getItemMeta().getDisplayName().equalsIgnoreCase("Canne à Pêche [Débutant]")){
-
-            if(event.getCaught() instanceof Item){
-
-                if(((Item) event.getCaught()) != null){
+                if (((Item) event.getCaught()) != null) {
 
 
                     event.setCancelled(true);
@@ -88,16 +85,20 @@ public class FishingEvent implements Listener {
 
                     String repfsh = fish.get(new Random().nextInt(fish.size()));
 
-                    player.sendTitle(ChatColor.GOLD +"Félicitaion !", ChatColor.DARK_GREEN + "Vous avez péché " + repfsh + " !", 1, 20, 1);
+                    player.sendTitle(ChatColor.GOLD + "Félicitaion !", ChatColor.DARK_GREEN + "Vous avez péché " + repfsh + " !", 1, 20, 1);
 
-                    if(repfsh.equalsIgnoreCase("une Truite")){
-                        float poid = (float) (0.3 + (Math.random()*0.5));
+                    if (repfsh.equalsIgnoreCase("une Truite")) {
+                        float poid = (float) (0.3 + (Math.random() * 0.5));
 
                         String dec = "#.##";
 
                         DecimalFormat df = new DecimalFormat(dec);
                         df.setRoundingMode(RoundingMode.HALF_UP);
                         String size = df.format(poid);
+
+                        ItemStack truite = new ItemBuilder(Material.COD).setName("Truite").addLoreLine(size).setCustomModelData(1).toItemStack();
+
+                        player.getInventory().addItem(truite);
 
                         try {
                             PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO `fishingmc`(`uuid`, `type`, `poids`) VALUE ( ?, ?, ?)");
@@ -109,11 +110,11 @@ public class FishingEvent implements Listener {
                         } catch (SQLException e) {
                         }
 
-                        Bukkit.broadcastMessage(ChatColor.GREEN + "Le joueur : " + ChatColor.DARK_GREEN + player.getDisplayName() + ChatColor.GREEN + " vient de pêcher " + ChatColor.DARK_GREEN + repfsh + ChatColor.GREEN + " de " + size + ChatColor.GREEN + "kg !" );
+                        Bukkit.broadcastMessage(ChatColor.GREEN + "Le joueur : " + ChatColor.DARK_GREEN + player.getDisplayName() + ChatColor.GREEN + " vient de pêcher " + ChatColor.DARK_GREEN + repfsh + ChatColor.GREEN + " de " + size + ChatColor.GREEN + "kg !");
                     }
 
-                    if(repfsh.equalsIgnoreCase("une Perche commune")){
-                        float poid = (float) (0.7 + (Math.random()*2.0));
+                    if (repfsh.equalsIgnoreCase("une Perche commune")) {
+                        float poid = (float) (0.7 + (Math.random() * 2.0));
 
                         String dec = "#.##";
 
@@ -131,11 +132,11 @@ public class FishingEvent implements Listener {
                         } catch (SQLException e) {
                         }
 
-                        Bukkit.broadcastMessage(ChatColor.GREEN + "Le joueur : " + ChatColor.DARK_GREEN + player.getDisplayName() + ChatColor.GREEN + " vient de pêcher " + ChatColor.DARK_GREEN + repfsh + ChatColor.GREEN + " de " + ChatColor.DARK_GREEN + size + ChatColor.GREEN + "kg !" );
+                        Bukkit.broadcastMessage(ChatColor.GREEN + "Le joueur : " + ChatColor.DARK_GREEN + player.getDisplayName() + ChatColor.GREEN + " vient de pêcher " + ChatColor.DARK_GREEN + repfsh + ChatColor.GREEN + " de " + ChatColor.DARK_GREEN + size + ChatColor.GREEN + "kg !");
                     }
 
-                    if(repfsh.equalsIgnoreCase("un Gardon")){
-                        float poid = (float) (0.3 + (Math.random()*1.0));
+                    if (repfsh.equalsIgnoreCase("un Gardon")) {
+                        float poid = (float) (0.3 + (Math.random() * 1.0));
 
                         String dec = "#.##";
 
@@ -153,11 +154,11 @@ public class FishingEvent implements Listener {
                         } catch (SQLException e) {
                         }
 
-                        Bukkit.broadcastMessage(ChatColor.GREEN + "Le joueur : " + ChatColor.DARK_GREEN + player.getDisplayName() + ChatColor.GREEN + " vient de pêcher " + ChatColor.DARK_GREEN + repfsh + ChatColor.GREEN + " de " + ChatColor.DARK_GREEN + size + ChatColor.GREEN + "kg !" );
+                        Bukkit.broadcastMessage(ChatColor.GREEN + "Le joueur : " + ChatColor.DARK_GREEN + player.getDisplayName() + ChatColor.GREEN + " vient de pêcher " + ChatColor.DARK_GREEN + repfsh + ChatColor.GREEN + " de " + ChatColor.DARK_GREEN + size + ChatColor.GREEN + "kg !");
                     }
 
-                    if(repfsh.equalsIgnoreCase("une Brème commune")){
-                        float poid = (float) (0.5 + (Math.random()*2.5));
+                    if (repfsh.equalsIgnoreCase("une Brème commune")) {
+                        float poid = (float) (0.5 + (Math.random() * 2.5));
 
                         String dec = "#.##";
 
@@ -175,11 +176,11 @@ public class FishingEvent implements Listener {
                         } catch (SQLException e) {
                         }
 
-                        Bukkit.broadcastMessage(ChatColor.GREEN + "Le joueur : " + ChatColor.DARK_GREEN + player.getDisplayName() + ChatColor.GREEN + " vient de pêcher " + ChatColor.DARK_GREEN + repfsh + ChatColor.GREEN + " de " + ChatColor.DARK_GREEN + size + ChatColor.GREEN + "kg !" );
+                        Bukkit.broadcastMessage(ChatColor.GREEN + "Le joueur : " + ChatColor.DARK_GREEN + player.getDisplayName() + ChatColor.GREEN + " vient de pêcher " + ChatColor.DARK_GREEN + repfsh + ChatColor.GREEN + " de " + ChatColor.DARK_GREEN + size + ChatColor.GREEN + "kg !");
                     }
 
-                    if(repfsh.equalsIgnoreCase("un Epinoche")){
-                        float poid = (float) (0.5 + (Math.random()*2.5));
+                    if (repfsh.equalsIgnoreCase("un Epinoche")) {
+                        float poid = (float) (0.5 + (Math.random() * 2.5));
 
                         String dec = "#.##";
 
@@ -197,10 +198,10 @@ public class FishingEvent implements Listener {
                         } catch (SQLException e) {
                         }
 
-                        Bukkit.broadcastMessage(ChatColor.GREEN + "Le joueur : " + ChatColor.DARK_GREEN + player.getDisplayName() + ChatColor.GREEN + " vient de pêcher " + ChatColor.DARK_GREEN + repfsh + ChatColor.GREEN + " de " + ChatColor.DARK_GREEN + size + ChatColor.GREEN + "kg !" );
+                        Bukkit.broadcastMessage(ChatColor.GREEN + "Le joueur : " + ChatColor.DARK_GREEN + player.getDisplayName() + ChatColor.GREEN + " vient de pêcher " + ChatColor.DARK_GREEN + repfsh + ChatColor.GREEN + " de " + ChatColor.DARK_GREEN + size + ChatColor.GREEN + "kg !");
                     }
-                    if(repfsh.equalsIgnoreCase("un Rotengle")){
-                        float poid = (float) (0.3 + (Math.random()*1.8));
+                    if (repfsh.equalsIgnoreCase("un Rotengle")) {
+                        float poid = (float) (0.3 + (Math.random() * 1.8));
 
                         String dec = "#.##";
 
@@ -218,13 +219,12 @@ public class FishingEvent implements Listener {
                         } catch (SQLException e) {
                         }
 
-                        Bukkit.broadcastMessage(ChatColor.GREEN + "Le joueur : " + ChatColor.DARK_GREEN + player.getDisplayName() + ChatColor.GREEN + " vient de pêcher " + ChatColor.DARK_GREEN + repfsh + ChatColor.GREEN + " de "  + ChatColor.DARK_GREEN + size + ChatColor.GREEN + " kg !" );
+                        Bukkit.broadcastMessage(ChatColor.GREEN + "Le joueur : " + ChatColor.DARK_GREEN + player.getDisplayName() + ChatColor.GREEN + " vient de pêcher " + ChatColor.DARK_GREEN + repfsh + ChatColor.GREEN + " de " + ChatColor.DARK_GREEN + size + ChatColor.GREEN + " kg !");
                     }
 
 
                 }
             }
-
 
 
         }

@@ -8,10 +8,8 @@ import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.ItemStack;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -26,11 +24,11 @@ public class VivierCommand implements CommandExecutor {
 
         Connection connection = Main.getInstance().database.getCo();
 
-        if(label.equalsIgnoreCase("vivier")){
+        if (label.equalsIgnoreCase("vivier")) {
 
-            if(args.length == 0){
+            if (args.length == 0) {
 
-                try{
+                try {
                     Inventory vivier = Bukkit.createInventory(null, 54, "Vivier de " + sender.getName());
 
 
@@ -40,7 +38,7 @@ public class VivierCommand implements CommandExecutor {
 
                     ResultSet resultats = stmt.executeQuery(request);
 
-                    while(resultats.next()){
+                    while (resultats.next()) {
 
                         vivier.addItem((new ItemBuilder(Material.COD).setName(ChatColor.DARK_GREEN + resultats.getString(2)).setLore(ChatColor.GREEN + "Poids : " + resultats.getString(3)).toItemStack()));
 
@@ -51,17 +49,17 @@ public class VivierCommand implements CommandExecutor {
 
                     player.openInventory(vivier);
 
-                }catch (SQLException e){
+                } catch (SQLException e) {
 
                 }
 
             }
 
-            if(args.length == 1){
+            if (args.length == 1) {
 
                 String player = args[0];
 
-                try{
+                try {
                     Inventory vivier = Bukkit.createInventory(null, 54, "Vivier de " + player);
 
 
@@ -71,7 +69,7 @@ public class VivierCommand implements CommandExecutor {
 
                     ResultSet resultats = stmt.executeQuery(request);
 
-                    while(resultats.next()){
+                    while (resultats.next()) {
 
                         vivier.addItem((new ItemBuilder(Material.COD).setName(ChatColor.DARK_GREEN + resultats.getString(2)).setLore(ChatColor.GREEN + "Poids : " + resultats.getString(3)).toItemStack()));
 
@@ -82,7 +80,7 @@ public class VivierCommand implements CommandExecutor {
 
                     p.openInventory(vivier);
 
-                }catch (SQLException e){
+                } catch (SQLException e) {
 
                 }
 
