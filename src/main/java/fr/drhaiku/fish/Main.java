@@ -3,6 +3,7 @@ package fr.drhaiku.fish;
 import fr.drhaiku.fish.bank.BanqueCommand;
 import fr.drhaiku.fish.bank.Economy;
 import fr.drhaiku.fish.bank.PlayerJoin;
+import fr.drhaiku.fish.camion.MissionCam;
 import fr.drhaiku.fish.commands.FishCommand;
 import fr.drhaiku.fish.commands.VivierCommand;
 import fr.drhaiku.fish.database.Account;
@@ -94,6 +95,7 @@ public final class Main extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new Poissonier(), this);
         getServer().getPluginManager().registerEvents(new Kit(), this);
 
+        getServer().getPluginManager().registerEvents(new MissionCam(), this);
 
 
 
