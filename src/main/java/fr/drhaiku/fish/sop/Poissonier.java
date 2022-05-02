@@ -48,9 +48,27 @@ public class Poissonier implements Listener {
 
                 }else{
 
-                    if(player.getInventory().getItemInMainHand().getItemMeta().getDisplayName().equalsIgnoreCase("truite")){
+                    if(player.getInventory().getItemInMainHand().getItemMeta().getDisplayName().equalsIgnoreCase("Truite")){
 
                         float size = Float.parseFloat(player.getInventory().getItemInMainHand().getItemMeta().getLore().get(1));
+
+                        if(size <= 0.4){
+
+                            player.sendMessage("test ton poisson -0.3");
+
+                        }
+
+                        if(size > 0.4 && size < 0.5){
+
+                            player.sendMessage("test ton poisson + 0.4 et -0.5");
+
+                        }
+
+                        if(size >= 0.5){
+
+                            player.sendMessage("test ton poisson + 0.5");
+
+                        }
 
 
 
